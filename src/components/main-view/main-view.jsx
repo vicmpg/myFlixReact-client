@@ -1,25 +1,22 @@
-import { useState, useEffect } from "react";
-import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
+import { Button, Card, Container, Row, Col } from 'react-bootstrap';
 
 export const MainView = () => {
-  const storedUser = 
-  JSON.parse(localStorage.getItem('user'))
-  const storedToken = localStorage.getItem('token')
   const [movies, setMovies] = useState([]);
-
   const [selectedMovie, setSelectedMovie] = useState(null);
+  // const storedUser = JSON.parse(localStorage.getItem("user")); // got an error 'SyntaxError: "undefined" is not valid JSON'
+  const storedUser = localStorage.getItem("user");   //works as as it should
+  const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] =  useState(storedToken ? storedToken : null)
-
   useEffect(() => {
     if(!token) {
       return
     }
     fetch('https://myflix-z4g1.onrender.com/movies')
-    .then((response) =>  response.json())
+    .then((response) => response.json())
     .then((data) => {
       const movieFromApi = data.map((movie) => {
         return {
@@ -29,56 +26,43 @@ export const MainView = () => {
           description: movie.description,
           director: movie.director.name,
           image: movie.image
-
         }
       })
       setMovies(movieFromApi)
       })
     }, [token])
 
-    if (!user) {
-      return (
-        <>
-          <LoginView
+  return (
+    <Row className="justify-content-md-center">
+    {!user ? (
+      <Container>
+          <Row >
+            <Col > 
+            <LoginView 
             onLoggedIn={(user, token) => {
               setUser(user);
               setToken(token);
             }}
           />
-          or
+          </Col>
+          <Col>
           <SignupView />
-        </>
-      );
-    }
-
-  if (selectedMovie) {
-    return (
+          </Col>
+          </Row>
+        </Container>
+    ) : selectedMovie ? (
+      <Col>
       <MovieView
         movie={selectedMovie}
         onBackClick={() => setSelectedMovie(null)}
       />
-    );
-  }
-
-  if (movies.length === 0) {
-    return <div>The list is empty!</div>;
-  }
-
-  return (
-    <div>
-      {movies.map((movie) => {
-        return (
-          <MovieCard
-            key={movie.id}
-            movieData={movie}
-            onMovieClick={(newSelectedMovie) =>
-              setSelectedMovie(newSelectedMovie)
-            }
-          />
-        );
-      })}
-
-      <button
+      </Col>
+    ) : movies.length === 0 ? (
+      <div>The list is empty!</div>
+    ) : (
+      <Container>
+        <Button
+      className="btn-logout"
         onClick={() => {
           setUser(null);
           setToken(null);
@@ -86,7 +70,24 @@ export const MainView = () => {
         }}
       >
         Logout
-      </button>
-    </div>
-  );
-};
+      </Button>
+      {movies.map((movie) => {
+        return (
+          <Row>
+          <Col>
+          <MovieCard
+          key={movie.id} 
+            movieData={movie}
+            onMovieClick={(newSelectedMovie) =>
+              setSelectedMovie(newSelectedMovie)
+            }
+          />
+          </Col>
+          </Row>
+
+        );
+      })}
+    </Container>
+    )}
+    </Row>
+  )};
