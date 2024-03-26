@@ -8,6 +8,7 @@ import { ProfileView } from "../profile-view/profile-view.jsx";
 import { Row } from "react-bootstrap";
 import { Col, Form, Button } from "react-bootstrap";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import "./main-view.scss";
 
 export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
