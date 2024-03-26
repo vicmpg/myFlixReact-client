@@ -1,152 +1,76 @@
-import { useState } from "react";
-import {MovieCard} from "../movie-card/movie-card"
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
-
-export const ProfileView = ({ user, token, movies, setUser }) => {
-
-    const [name, setName] = useState(user.Username)
-    const [password, setPassword] = useState(user.Password)
-    const [email, setEmail] = useState(user.Email)
-    const [birthday, setBirthday] = useState(user.Birthday)
-    console.log (user);
-
-    const favMov = user.favoriteMovies ? movies.filter((movie) => user.favoriteMovies.includes(movie._id)) : [];
-
-    const handleUpdate = (event) => {
-        event.preventDefault();
-
-        const data = {
-          Username: name,
-          Password: password,
-          Email: email,
-          Birthday: birthday,
-        }
-
-        fetch(`https://myflix-z4g1.onrender.com/users/${user.name}`, {   
-			method: "PUT",
-			body: JSON.stringify(data),
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`
-			}
-		}).then(async (response) => {
-            console.log(response)
-                  if (response.ok) {
-              response.json();
-              alert('updated!')
-              localStorage.setItem('user', JSON.stringify(data))
-              setUser(data)
-
-                  } else {
-              const e = await response.text()
-              console.log(e)
-                      alert("Update failed.")
-                }
-            }).then((updatedUser) =>{
-                if(updatedUser) {
-                  localStorage.setItem('user', JSON.stringify(updatedUser))
-                  setUser(updatedUser)
-                }  
-              })
-    } 
-
-    const handleDelete = () => {
-		fetch(`https://myflix-z4g1.onrender.com/users/${user.name}`, {
-			method: "DELETE",
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		}).then((response) => {
-			if (response.ok) {
-				setUser(null);
-				alert("Your account has been deleted");
-			} else {
-				alert("something went wrong.")
-			}
-		})
-	}
-
-    console.log(user)
-    console.log(user.name)
-
-    return (
-
-        <Container>
-        <Row className="justify-content-md-center mx-3 my-4">
-        <h2 className="profile-title">Favorite movies</h2>
-          {favMov.map((movie) => {
-             return (
-
-              <Col
-                key={movie._id}
-               className="m-3"
-              >
-                <MovieCard
-                  movie={movie}
-                  token={token}
-                  setUser={setUser}
-                  user={user}
-                />
-              </Col>
-            );
-          })}
-         </Row>
+import React, { useState, useEffect } from "react";
+import { Button, Card } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import { Link } from "react-router-dom";
 
 
+export const ProfileView = ({ user, onUserUpdate, onDeregister }) => {
+  const [newUsername, setNewUsername] = useState(user.Username);
+  const [newPassword, setNewPassword] = useState("");
+  const [newEmail, setNewEmail] = useState(user.Email);
+  const [newDOB, setNewDOB] = useState(user.Birthday);
 
+  const handleUpdate = () => {
+    // Implement the logic to update user information
+    const updatedUser = {
+      Username: newUsername,
+      Password: newPassword,
+      Email: newEmail,
+      Birthday: newDOB,
+    };
+    // Call a function to update the user information
+    onUserUpdate(updatedUser);
+  };
 
-
-
-            <Row className="justify-content-center">
-
-                <Col md={6} >
-                <h2 className="profile-title">Update info</h2>
-                <Form className="my-profile" onSubmit={handleUpdate}>
-                <Form.Group className="mb-2" controlId="formName">
-                <Form.Label>Name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </Form.Group >
-              <Form.Group className="mb-2" controlId="formPassword">
-                <Form.Label>Password:</Form.Label>
-                <Form.Control
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-2" controlId="formEmail">
-                <Form.Label>Email:</Form.Label>
-                <Form.Control
-                 type="email"
-                 value={email}
-                 onChange={(e) => setEmail(e.target.value)}
-                 required
-                />
-              </Form.Group>
-              <Form.Group controlId="formBirthday">
-                <Form.Label>Birthday:</Form.Label>
-                <Form.Control
-                 type="date"
-                 value={birthday.slice(0,10)}
-                 onChange={(e) => setBirthday(e.target.value)}
-                 required/>
-              </Form.Group>
-
-              <Button className="update" type="submit" onClick={handleUpdate}>Update</Button>
-              <Button className="delete"onClick={handleDelete}>Delete Account</Button>
-                </Form>
-
-                </Col>
-
-            </Row>
-
-
-          </Container>
-    )
-}
+  return (
+    <div>
+      <h2>User Profile</h2>
+      <Form>
+        <Form.Group controlId="formUsername">
+          <Form.Label>Username:</Form.Label>
+          <Form.Control
+            type="text"
+            value={newUsername}
+            onChange={(e) => setNewUsername(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="formPassword">
+          <Form.Label>New Password:</Form.Label>
+          <Form.Control
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId="formEmail">
+          <Form.Label>Email:</Form.Label>
+          <Form.Control
+            type="email"
+            value={newEmail}
+            onChange={(e) => setNewEmail(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId="formDOB">
+          <Form.Label>Date of Birth:</Form.Label>
+          <Form.Control
+            type="date"
+            value={newDOB}
+            onChange={(e) => setNewDOB(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Link to="/profile/favorites">
+          <Button variant="primary">View Favorite Movies</Button>
+        </Link>
+        <Button variant="primary" onClick={handleUpdate}>
+          Update Profile
+        </Button>
+      </Form>
+      <Button variant="danger" onClick={onDeregister}>
+        Deregister
+      </Button>
+    </div>
+  );
+};
