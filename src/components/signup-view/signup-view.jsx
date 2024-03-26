@@ -11,10 +11,10 @@ export const SignupView = () => {
   event.preventDefault();
 
     const data = {
-      username: username,
-      password: password,
-      email: email,
-      birthday: birthday,
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday,
     };
 
     fetch("https://myflix-z4g1.onrender.com/users", {

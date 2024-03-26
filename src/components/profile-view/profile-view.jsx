@@ -4,11 +4,11 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 export const ProfileView = ({ user, token, movies, setUser }) => {
 
-    const [name, setName] = useState(user.name)
-    const [password, setPassword] = useState(user.password)
-    const [email, setEmail] = useState(user.email)
-    const [birthday, setBirthday] = useState(user.birthday)
-
+    const [name, setName] = useState(user.Username)
+    const [password, setPassword] = useState(user.Password)
+    const [email, setEmail] = useState(user.Email)
+    const [birthday, setBirthday] = useState(user.Birthday)
+    console.log (user);
 
     const favMov = user.favoriteMovies ? movies.filter((movie) => user.favoriteMovies.includes(movie._id)) : [];
 
@@ -16,10 +16,10 @@ export const ProfileView = ({ user, token, movies, setUser }) => {
         event.preventDefault();
 
         const data = {
-          name: name,
-          password: password,
-          email: email,
-          birthday: birthday,
+          Username: name,
+          Password: password,
+          Email: email,
+          Birthday: birthday,
         }
 
         fetch(`https://myflix-z4g1.onrender.com/users/${user.name}`, {   

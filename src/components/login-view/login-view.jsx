@@ -10,8 +10,8 @@ export const LoginView = ({ onLoggedIn }) => {
     event.preventDefault();
 
     const data = {
-      username: username,
-      password: password,
+      Username: username,
+      Password: password,
     };
     
       fetch("https://myflix-z4g1.onrender.com/login", { 
