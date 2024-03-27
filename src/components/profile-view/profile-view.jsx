@@ -83,7 +83,7 @@ export const ProfileView = ({ user, movies, setUser, removeFav, addFav}) => {
                     <Card>
                         <Card.Body>
                             <Card.Title>My Profile</Card.Title>
-                            <Card.Img variant="top" src="https://via.placeholder.com/250" className="w-50 rounded"/>
+                            <Card.Img variant="top" src="https://tse2.mm.bing.net/th?id=OIP.PT9BC5OXF8pOOoLORtYP5gHaHa&pid=Api&P=0&h=220/250" className="w-50 rounded"/>
                             <Card.Text>Username: {user.Username}</Card.Text>
                             <Card.Text>Email: {user.Email}</Card.Text>
                             <Card.Text>Birthday: {user.Birthday}</Card.Text>

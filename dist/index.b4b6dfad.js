@@ -42375,7 +42375,7 @@ const ProfileView = ({ user, movies, setUser, removeFav, addFav })=>{
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Img, {
                                         variant: "top",
-                                        src: "https://via.placeholder.com/250",
+                                        src: "https://tse2.mm.bing.net/th?id=OIP.PT9BC5OXF8pOOoLORtYP5gHaHa&pid=Api&P=0&h=220/250",
                                         className: "w-50 rounded"
                                     }, void 0, false, {
                                         fileName: "src/components/profile-view/profile-view.jsx",
