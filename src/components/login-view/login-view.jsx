@@ -41,7 +41,7 @@ export const LoginView = ({ onLoggedIn }) => {
     <Container >
       <Row>
       <Col>
-      <Card className="shadow p-4 mb-4 bg-white mt-5 border-0">
+      <Card className="shadow p-4 mb-4 bg-grey mt-5 border-0">
         <CardBody>
           <CardTitle className="card-title">Login</CardTitle>
         <Form onSubmit={handleSubmit}>

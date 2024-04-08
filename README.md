@@ -19,7 +19,7 @@ The client-side for an app called myMovie based on its existing server-side code
 movie_api (https://github.com/vicmpg/mymovie_api)
 
 ## Link to app 
-Hosted on Netlify: 
+Hosted on Netlify: https://my-flix-app-react.netlify.app
 
 ## Views
 
